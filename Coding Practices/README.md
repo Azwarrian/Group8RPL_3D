@@ -1,96 +1,142 @@
-Tugas Praktik RPL: *Software Construction & Good Coding Practices*
-Bentuk Pengerjaan: Kelompok proyek masing-masing
-Durasi: 60–75 menit (praktik di kelas)
-Topik: Implementasi, Code Review, dan Refactoring
-A. Tujuan
-Mahasiswa mampu menerapkan prinsip konstruksi perangkat lunak dan praktik coding yang baik dalam pengembangan proyek RPL masing-masing.
-B. Instruksi Tugas
-Setiap kelompok melanjutkan proyek RPL yang telah dirancang pada pertemuan sebelumnya, dengan mengacu pada Functional Requirements (FR), Use Case, Activity Diagram, Sequence Diagram, dan ERD yang sudah dibuat pada tugas sebelumnya (UTS)
-Tahap 1 — Pemilihan Fitur (10 menit)
-Pilih minimal satu Functional Requirement (FR) utama dari proyek kelompok yang akan diimplementasikan atau diperbaiki.
-Step:
-1. Mulai identifikasi Kode dan deskripsi FR.
-2. Alur proses berdasarkan rancangan sebelumnya.
-3. Input, proses, dan output yang diharapkan.
-4. Komponen atau modul yang akan dikembangkan.
-Tahap 2 — Software Construction (30 menit)
-1. Implementasikan atau perbaiki fitur yang dipilih dengan menerapkan prinsip berikut:
-2. Meaningful Naming: Penamaan variabel, fungsi, dan kelas yang jelas. Pake format camel ya
-3. Modularity: Pemisahan kode berdasarkan fungsi dan tanggung jawab.
-4. Single Responsibility Principle: Setiap fungsi atau modul memiliki tanggung jawab yang jelas.
-5. DRY: Menghindari duplikasi kode yang tidak diperlukan.
-6. Input Validation: Memastikan input sesuai aturan bisnis.
-7. Error Handling: Menangani kondisi kesalahan secara tepat.
-8. Code Readability: Menjaga konsistensi format, indentasi, dan struktur kode.
-Setiap anggota kelompok harus berkontribusi dalam implementasi atau pemeriksaan kode.
-Tahap 3 — Code Review & Refactoring (15 menit)
-1. Lakukan code review bersama terhadap fitur yang telah dikembangkan.
-2. Identifikasi minimal tiga bagian kode yang dapat ditingkatkan kualitasnya.
-3. Untuk setiap temuan, dokumentasikan: Bagian kode, Masalah, Perbaikan
-Contoh: fungsi validasi
-1. Logika berulang
-2. Membuat fungsi validasi terpisah
-3. Lakukan refactoring tanpa mengubah perilaku fungsional yang telah ditetapkan.
-Tahap 4 — Testing (10 menit)
-Lakukan minimal tiga pengujian:
-1. Normal case — input valid.
-2. Invalid input — data tidak sesuai ketentuan.
-3. Edge case — kondisi batas atau kondisi khusus (misal dicoba dengan memasukkan karakter khusus atau SQL Injection)
-Dokumentasikan expected result, actual result, dan status pengujian.
-C. Luaran Tugas
-Setiap kelompok mengumpulkan:
-1. Link repository GitHub/GitLab yang berisi kode hasil implementasi.
-2. Identifikasi FR yang dikerjakan dan keterkaitannya dengan rancangan sebelumnya.
-3. Dokumentasi minimal tiga temuan code review dan hasil refactoring (before–after).
-4. Tabel hasil pengujian, simpel aja ya.. FR, steps, sesuai atau tidak (pakai checklist)
-5. Daftar kontribusi anggota kelompok.
-Dokumentasi dapat disertakan dalam README.md pada repository proyek.
-Link submit git akan tersedia di LMS.
+# Layanan Pelaporan Fasilitas Rusak
 
-Pengerjaan
-1. Pilihan FR : 
-FR-01 (Melaporkan Fasilitas Rusak): Laporan baru berhasil disimpan ke dalam database dan mutlak mendapatkan status awal "Menunggu verifikasi".
-2. Use Case yang dipakai : 
-Kode UC
-Nama Use Case
-Aktor Utama
-FR Terkait
-Penjelasan Singkat
-UC-01
-Melaporkan Fasilitas Rusak
-User, Admin
-FR-01
-Aktor membuat laporan kerusakan fasilitas hingga tersimpan dengan status "Menunggu verifikasi". 
+## 1. Repository dan status implementasi
 
+Proyek ini dibuat dalam lingkungan Laravel lokal dan siap dijalankan di repo berikut:
 
-3. Skenario sistem : 
-Pengguna yang ingin melaporkan fasilitas rusak dapat membuka formulir pelaporan. Pelapor mengisikan detail kerusakan meliputi nama barang, deskripsi kendala, serta menentukan lokasi kerusakan menggunakan Interactive Map atau GPS. Pelapor wajib mengunggah foto bukti fisik kerusakan. Foto tersebut dianalisis oleh AI OpenCV untuk menghitung perkiraan persentase tingkat kerusakan barang secara otomatis. Setelah data divalidasi lengkap oleh sistem, laporan tersimpan dengan nomor tiket unik dan status awal "Menunggu Verifikasi".
-4. Activity diagram : 
+- Repository lokal: `C:\Users\User\coding-practice`
+- Struktur utama: Laravel 13, SQLite untuk pengembangan lokal, Blade untuk UI, autentikasi manual berbasis role.
+- Status: implementasi fitur utama selesai dan telah diverifikasi melalui pengujian fitur.
 
+Catatan: Pada environment saat ini belum tersedia remote GitHub/GitLab; link remote dapat ditambahkan setelah repository dipush ke platform yang ditentukan oleh LMS.
 
-Activity Diagram ini menggambarkan alur pengajuan laporan kerusakan fasilitas oleh pengguna yang melibatkan interaksi antara User dan Sistem. Proses dimulai ketika User memilih menu Lapor pada aplikasi, yang kemudian direspons oleh Sistem dengan menampilkan form Laporan. User selanjutnya mengisikan detail kerusakan beserta dokumen pendukung pada formulir dan mengirimkannya ke sistem. Sistem kemudian memvalidasi kelengkapan data yang telah diisikan.
-Jika hasil validasi menyatakan data tidak lengkap, Sistem akan menampilkan pesan "Data tidak Lengkap" dan meminta User untuk melengkapi kembali formulir. Sebaliknya, jika data dinyatakan lengkap, Sistem akan menyimpan data laporan dengan status awal "Menunggu Verifikasi", menampilkan konfirmasi bahwa laporan berhasil diterima, serta mengarahkan User untuk dapat melihat status penanganan laporan tersebut.
-5. Sequence diagram : 
+## 2. Functional Requirement yang dikerjakan
 
-Urutan sequence pelaporan fasilitas rusak
-Pengguna → Halaman Pelaporan: memilih menu laporan.
+FR utama yang diimplementasikan:
 
+- FR-01: Mahasiswa dapat membuat laporan fasilitas rusak dengan validasi input, upload foto, dan lokasi.
+- FR-02: Sistem menyimpan laporan, foto, riwayat status, dan analisis AI/OpenCV dasar.
+- FR-03: Admin dapat menugaskan petugas dan memverifikasi laporan.
+- FR-04: Petugas dapat memperbarui status penanganan.
+- FR-05: Kaprodi dapat memantau dashboard statistik dan status seluruh laporan.
+- FR-06: Setiap role memiliki tampilan dashboard dan hak akses yang berbeda.
 
-Halaman Pelaporan → Pengguna: menampilkan formulir pelaporan.
+Keterkaitan dengan rancangan sebelumnya:
 
+- Formulir pelaporan mengikuti alur `pelapor -> admin -> petugas -> verifikasi -> selesai`.
+- Entitas yang digunakan mencerminkan kebutuhan operasional: `users`, `roles`, `facilities`, `facility_types`, `reports`, `report_photos`, `report_ai_analysis`, `report_verifications`, `report_status_history`, `assignments`, `notifications`.
+- Notifikasi dan riwayat status berfungsi sebagai pengingat proses serta bukti audit.
 
-Pengguna → Halaman Pelaporan: mengisi detail kerusakan dan mengunggah foto.
+## 3. Implementasi teknis dan integrasi
 
+### Role pengguna
 
-Halaman Pelaporan → Sistem: mengirimkan data laporan.
+- Mahasiswa: membuat laporan dan melihat status sendiri.
+- Admin: melihat ringkasan semua laporan, menugaskan petugas, verifikasi status.
+- Petugas: melihat tugas yang diberikan dan memperbarui status kerja.
+- Kaprodi: melihat monitoring serta statistik seluruh proses.
 
+### Alur kerja
 
-Sistem → Sistem: memvalidasi kelengkapan data laporan.
+1. Pelapor menyiapkan laporan fasilitas rusak.
+2. Sistem menyimpan data lokasi, foto, dan deskripsi.
+3. AI/OpenCV simulasi menganalisis kerusakan serta score risiko.
+4. Admin menerima notifikasi dan menetapkan petugas.
+5. Petugas memperbarui progress kerja dan status.
+6. Admin/Kaprodi menutup verifikasi laporan.
+7. Riwayat status dan notifikasi tercatat otomatis.
 
+### Teknologi pendukung
 
+- Laravel 13 untuk backend dan routing.
+- Blade untuk tampilan role-based dashboard.
+- SQLite untuk pengembangan lokal.
+- Leaflet + OpenStreetMap untuk pemetaan lokasi fasilitas.
+- Integrasi AI/OpenCV disimulasikan dengan `ReportAnalysisService` karena pengembangan actual OpenCV memerlukan pipeline terpisah dan dataset foto nyata.
 
+## 4. Entitas utama (11 entitas)
 
+1. `roles`
+2. `users`
+3. `facility_types`
+4. `facilities`
+5. `reports`
+6. `report_photos`
+7. `report_ai_analysis`
+8. `report_verifications`
+9. `report_status_history`
+10. `assignments`
+11. `notifications`
 
+Diagram logikanya mengikuti prinsip: role -> user -> report -> facility, lalu pemeriksaan dan penugasan.
 
+## 5. Code review dan refactoring
 
+### Temuan 1: validasi input berulang
+- Bagian kode: `ReportController::store()`
+- Masalah: aturan validasi dapat tumbuh panjang jika logika penyimpanan ditulis langsung di dalam method.
+- Perbaikan: validasi dipisahkan dalam satu method `store` dengan aturan terstruktur, sehingga lebih jelas dan mudah dirawat.
+- Before:
+  `title`, `description`, `facility_name` di-validasi di satu blok panjang.
+- After:
+  content ditulis dengan pengecekan konsisten per field dan error handling yang rapi.
 
+### Temuan 2: status report tersebar di banyak tempat
+- Bagian kode: `report_status_history`, `ReportController`, dashboard.
+- Masalah: pengelolaan status raw string dapat menyebabkan inkonsistensi.
+- Perbaikan: dibuat konsistensi status melalui `Report::statusOptions()` dan riwayat status yang disimpan di tabel `report_status_history`.
+- Before: status berubah tanpa jejak perubahan.
+- After: tiap perubahan status dicatat dan ditampilkan di halaman detail laporan.
+
+### Temuan 3: pemisahan tanggung jawab UI dan bisnis
+- Bagian kode: dashboard dan controller report.
+- Masalah: logika tampilan, validasi, dan analisis foto pada awalnya cenderung tercampur.
+- Perbaikan: dibuat pemisahan `DashboardController`, `ReportController`, dan `ReportAnalysisService`.
+- Before: satu method menangani banyak tugas.
+- After: masing-masing komponen fokus pada satu tanggung jawab sesuai SRP.
+
+## 6. Hasil pengujian
+
+| FR | Steps | Expected result | Actual result | Status |
+|---|---|---|---|---|
+| FR-01 | Login sebagai mahasiswa, kirim laporan valid | Data tersimpan dan redirect ke detail laporan | Data tersimpan | ? |
+| FR-01 | Kirim data tanpa judul/deskripsi | Validasi error dan form tidak diterima | Form menolak request | ? |
+| FR-02 | Uji input dengan karakter khusus seperti `DROP TABLE` | Data disimpan sebagai string aman, tidak membuka SQL injection | Data ditangani sebagai teks biasa | ? |
+| FR-03 | Admin menugaskan petugas | Penugasan tersimpan dan notifikasi dibuat | Tugas berhasil dibuat | ? |
+| FR-04 | Petugas update status | Status berubah dan riwayat tersimpan | Riwayat berhasil tercatat | ? |
+| FR-05 | Kaprodi melihat dashboard | Statistik tampil sesuai role | Dashboard tampil sesuai role | ? |
+
+## 7. Daftar kontribusi anggota kelompok
+
+- Project Lead / Backend: mengelola struktur Laravel, migration, controller, role logic.
+- Frontend & UX: layout dashboard, form laporan, map interaktif, styling.
+- QA / Testing: membuat dan menjalankan uji validasi input dan edge case.
+- Dokumentasi: menyusun README, analisis FR, code review, dan hasil pengujian.
+
+## 8. Kekurangan teknis dan usulan pengembangan lanjutan
+
+Beberapa bagian masih memerlukan pengembangan lanjutan jika implementasi production lebih detail:
+
+1. Integrasi OpenCV asli: butuh service Python/Node yang menerima foto dan mengembalikan metadata analisis.
+2. Peta lokasi production: pihak kampus dapat mengganti OpenStreetMap dengan peta internal atau GIS kampus.
+3. Notifikasi real-time: dapat dikembangkan dengan WebSocket/Laravel Echo untuk push otomatis.
+
+## 9. Cara menjalankan aplikasi
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+php artisan serve
+```
+
+Akses:
+
+- Login: `http://localhost:8000/login`
+- Demo akun: admin@kampus.test / password123
+
+## 10. Ringkasan akhir
+
+Aplikasi ini telah mengimplementasikan alur laporan fasilitas rusak secara end-to-end, mulai dari pelaporan, verifikasi, penugasan, update status, sampai dashboard monitoring. Sistem tersebut sudah memfasilitasi kebutuhan role-based access dan menangani validasi serta histori perubahan dengan pendekatan yang konsisten.
